@@ -6,7 +6,6 @@
 var MongoClient = require('mongodb').MongoClient;
 
 
-
 /**
  * Configures the MongoDB connection.
  * @param {!express} app The express application instance.
