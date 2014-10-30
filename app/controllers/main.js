@@ -1,5 +1,5 @@
 /**
- * Expose `Main` Controller.
+ * Expose "Main" Controller.
  */
 module.exports = new Main;
 
