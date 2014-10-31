@@ -23,7 +23,7 @@ describe('routes configuration test', function() {
         });
   }
 
-  it('should successfully load the routes configuration', function(done) {
+  it('should get routes for the application', function(done) {
     // Get all the routes that match the GET verb. To keep the test simple,
     // we are skipping POST, DELETE, etc.
     var routes = router.getRoutesByVerb('get');
@@ -41,5 +41,15 @@ describe('routes configuration test', function() {
 
     // Start the proccess.
     recursiveGet(routes.shift());
+  });
+
+  it('should get a list of routes for a verb', function(done) {
+    // Please implement.
+    done();
+  });
+
+  it('should get a controller', function(done) {
+    // Please implement.
+    done();
   });
 });
