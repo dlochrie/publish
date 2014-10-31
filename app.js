@@ -19,17 +19,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configure the Mongo DB Connection.
-require('./config/mongo')(app);
+// Get a list of all the configuration files. The order is important.
+var confList = ['mongo', 'routes'];
 
-// Configure the Routes for the application.
-// This should be placed above any error-handling logic.
-require('./config/routes')(app);
+// Load all the configuration files in the list.
+confList.forEach(function(name) {
+  var file = path.join(__dirname, 'config', name);
+  var Config = require(file);
+  return new Config(app);
+});
 
-// Attach error handling middleware. This MUST come after router middleware.
+// Attach error handling middleware. This MUST come after router middleware,
+// which is loaded in the configuration above.
 app.use(errorHandler.pageNotFound);
 app.use(errorHandler.pageError);
-
 
 /**
  * Expose the Express app to application.

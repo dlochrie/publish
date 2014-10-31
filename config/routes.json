@@ -1,0 +1,8 @@
+{
+  "main": [
+    {"verb": "get", "path": "/", "action": "index"}
+  ],
+  "articles": [
+    {"verb": "get", "path": "/articles", "action": "index"}
+  ]
+}
