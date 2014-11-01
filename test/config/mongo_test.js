@@ -39,15 +39,15 @@ describe('mongo configuration test', function() {
     });
 
     it('should fail connecting with a missing connection string',
-          function(done) {
-      app.settings.publish['MONGO CONNECTION STRING'] = null;
-      // To test for thrown errors, we must wrap the methods in anonymous
-      // functions.
-      (function() {
-        mongo = new Mongo(app);
-      }).should.throw(
-          'Could not connect to Mongo DB using connection string "undefined"');
-      done();
-    });
+       function(done) {
+         app.settings.publish['MONGO CONNECTION STRING'] = null;
+         // To test for thrown errors, we must wrap the methods in anonymous
+         // functions.
+         (function() {
+           mongo = new Mongo(app);
+         }).should.throw(
+         'Could not connect to Mongo DB using connection string "undefined"');
+         done();
+       });
   });
 });

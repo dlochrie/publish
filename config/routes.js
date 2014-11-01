@@ -4,8 +4,7 @@
  */
 var express = require('express'),
     path = require('path'),
-    util = require('util'),
-    ctrlDir = ('../app/controllers/');
+    util = require('util');
 
 
 
@@ -49,7 +48,7 @@ function Router(app) {
 Router.prototype.getController = function(name) {
   var ctrl;
   try {
-    ctrl = require(path.join(ctrlDir, name));
+    ctrl = require(path.join(Router.CONTROLLER_DIRECTORY_, name));
   } catch (e) {}
   if (!ctrl) {
     throw new Error(util.format('Could not load the "%s" controller.', name));
@@ -109,6 +108,14 @@ Router.prototype.getRoutesByVerb = function(verb) {
 
   return paths;
 };
+
+
+/**
+ * (Relative) path to the controllers directory.
+ * @const {string}
+ * @private
+ */
+Router.CONTROLLER_DIRECTORY_ = '../app/controllers/';
 
 
 /**
