@@ -1,25 +1,44 @@
-var mongo = require('../../config/mongo');
+var Mongo = require('../../config/mongo');
 
 describe('mongo configuration test', function() {
-  it('should make a connection to the mongo database', function(done) {
-    // Since the mongo.connect method is asynchronous, emulate async with a
-    // timeout.
-    setTimeout(function() {
-      mongo(app);
+  var mongo;
+
+  describe('when successfully configured', function() {
+    beforeEach(function(done) {
+      // Since it takes a second or two to connect, emulate some time passing.
+      setTimeout(function() {
+        mongo = new Mongo(app);
+        done();
+      }, 100);
+    });
+
+    it('should make a connection to the mongo database', function(done) {
       app.should.be.a.Function;
       app.settings.mongo.should.be.an.Object;
       app.settings.mongo.should.have.property('databaseName');
       app.settings.mongo.should.have.property('serverConfig');
       done();
-    }, 100);
+    });
   });
 
-  it('should fail connecting with invalid parameters', function(done) {
-    // Since the mongo.connect method is asynchronous, emulate async with a
-    // timeout.
-    setTimeout(function() {
-      throw new Error('Please implement');
+  describe('when unsuccessfully configured', function() {
+    beforeEach(function(done) {
+      setTimeout(function() {
+        // Provide an obviously invalid connection string.
+        app.settings.publish['MONGO CONNECTION STRING'] = 'blah';
+        done();
+      }, 100);
+    });
+
+    it('should fail connecting with invalid parameters', function(done) {
+      app.should.be.a.Function;
+      // To test for thrown errors, we must wrap the methods in anonymous
+      // functions.
+      (function() {
+        mongo = new Mongo(app);
+      }).should.throw(
+          'URL must be in the format mongodb://user:pass@host:port/dbname');
       done();
-    }, 100);
+    });
   });
 });

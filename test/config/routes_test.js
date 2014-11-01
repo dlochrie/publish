@@ -44,12 +44,60 @@ describe('routes configuration test', function() {
   });
 
   it('should get a list of routes for a verb', function(done) {
-    // Please implement.
+    var routes;
+
+    router.routes_ = {
+      foo: [
+        {'verb': 'get', 'path': '/test-a1', 'action': 'index'},
+        {'verb': 'get', 'path': '/test-a2', 'action': 'index'},
+        {'verb': 'post', 'path': '/test-a3', 'action': 'index'}
+      ],
+      bar: [
+        {'verb': 'get', 'path': '/test-b1', 'action': 'index'},
+        {'verb': 'post', 'path': '/test-b2', 'action': 'index'},
+        {'verb': 'delete', 'path': '/test-b3', 'action': 'index'}
+      ]
+    };
+
+    routes = router.getRoutesByVerb('get');
+    routes.should.have.lengthOf(3);
+    routes.should.eql(['/test-a1', '/test-a2', '/test-b1']);
+
+    routes = router.getRoutesByVerb('post');
+    routes.should.have.lengthOf(2);
+    routes.should.eql(['/test-a3', '/test-b2']);
+
+    routes = router.getRoutesByVerb('delete');
+    routes.should.have.lengthOf(1);
+    routes.should.eql(['/test-b3']);
+
+    routes = router.getRoutesByVerb(null);
+    routes.should.be.Array;
+    routes.should.have.lengthOf(0);
+
+    routes = router.getRoutesByVerb('not a verb');
+    routes.should.be.Array;
+    routes.should.have.lengthOf(0);
     done();
   });
 
   it('should get a controller', function(done) {
-    // Please implement.
+    var main = router.getController('main');
+    main.should.be.an.Object;
+    main.should.have.property('index');
+    done();
+  });
+
+  it('should fail to get non-existent controllers', function(done) {
+    // To test for thrown errors, we must wrap the methods in anonymous
+    // functions.
+    (function() {
+      router.getController('undef');
+    }).should.throw('Could not load the "undef" controller.');
+
+    (function() {
+      router.getController(null);
+    }).should.throw('Could not load the "null" controller.');
     done();
   });
 });

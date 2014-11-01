@@ -6,16 +6,20 @@
 var MongoClient = require('mongodb').MongoClient;
 
 
+
 /**
  * Configures the MongoDB connection.
  * @param {!express} app The express application instance.
+ * @constructor
  */
 function Mongo(app) {
-  // Connection URL
-  var url = 'mongodb://localhost:27017/publish';
+  /**
+   * Connection string for the Mongo.
+   */
+  this.connectionString = app.settings.publish['MONGO CONNECTION STRING'];
 
   // Connect to Mongo DB.
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(this.connectionString, function(err, db) {
     // Store the Mongo DBC on the Express "app" object.
     app.set('mongo', db);
     // TODO: Handle Errors.

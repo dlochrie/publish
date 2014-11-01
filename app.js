@@ -19,6 +19,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Load all the settings.
+var globals = path.join(__dirname, 'config', 'globals.json');
+var properties = require(globals).properties;
+var env = process.env.NODE_ENV.toUpperCase();
+var settings = {};
+for (var prop in properties) {
+  var setting = properties[prop];
+  var environmental = [env, setting.systemName].join('');
+  settings[setting.name] = process.env[environmental] || setting.default;
+}
+app.set('publish', settings);
+
 // Get a list of all the configuration files. The order is important.
 var confList = ['mongo', 'routes'];
 
@@ -33,6 +45,7 @@ confList.forEach(function(name) {
 // which is loaded in the configuration above.
 app.use(errorHandler.pageNotFound);
 app.use(errorHandler.pageError);
+
 
 /**
  * Expose the Express app to application.

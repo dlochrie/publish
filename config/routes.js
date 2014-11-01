@@ -4,6 +4,7 @@
  */
 var express = require('express'),
     path = require('path'),
+    util = require('util'),
     ctrlDir = ('../app/controllers/');
 
 
@@ -46,7 +47,14 @@ function Router(app) {
  * @return {!Function} The controller class.
  */
 Router.prototype.getController = function(name) {
-  return require(path.join(ctrlDir, name));
+  var ctrl;
+  try {
+    ctrl = require(path.join(ctrlDir, name));
+  } catch (e) {}
+  if (!ctrl) {
+    throw new Error(util.format('Could not load the "%s" controller.', name));
+  }
+  return ctrl;
 };
 
 
@@ -70,12 +78,11 @@ Router.prototype.getRoutes = function() {
             path = route.path,
             action = route.action,
             callback = ctrl[action];
-
         router[verb](path, callback);
       });
     } else {
       throw new Error(util.format(
-          'Could not get the controller information for %s.', name));
+          'Could not load the routes for the "%s" controller.', name));
     }
   }, this);
 };

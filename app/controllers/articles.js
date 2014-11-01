@@ -23,8 +23,6 @@ function ArticlesController() {}
 ArticlesController.prototype.index = function(req, res, next) {
   var viewModel = new ArticleVM(req.app);
   viewModel.find(function(err, rows) {
-    console.log('err', err);
-    console.log('rows', rows);
     res.render('articles/index', {
       rows: rows,
       title: 'Express, through controller'
