@@ -1,12 +1,16 @@
+/**
+ * Configures the application globals. These values come from environmental
+ * variables, and are set on the Express app instance as a setting under the
+ * "publish" namespace. The mapping for the environmental variables can be found
+ * in the "globals.json" file.
+ */
 var path = require('path'),
     util = require('util');
 
 
 
 /**
- * Configures the application globals. These values come from environmental
- * variables, and are set on the Express app instance as a setting under the
- * "publish" namespace.
+ * Constructor for the Globals module.
  * @param {!express} app The express application instance.
  * @constructor
  */
