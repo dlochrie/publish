@@ -3,7 +3,8 @@
  * Since the MongoDB connection handles it's own pooling, we only need one
  * connection for the application.
  */
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient,
+    util = require('util');
 
 
 
@@ -14,17 +15,57 @@ var MongoClient = require('mongodb').MongoClient;
  */
 function Mongo(app) {
   /**
-   * Connection string for the Mongo.
+   * Reference to the Express app instance.
+   * @private {!express}
    */
-  this.connectionString = app.settings.publish['MONGO CONNECTION STRING'];
+  this.app_ = app;
 
-  // Connect to Mongo DB.
-  MongoClient.connect(this.connectionString, function(err, db) {
-    // Store the Mongo DBC on the Express "app" object.
-    app.set('mongo', db);
-    // TODO: Handle Errors.
-  });
+  /**
+   * Connection string for the Mongo.
+   * @private {string}
+   */
+  this.connectionString_ = app.settings.publish['MONGO CONNECTION STRING'];
+
+  // Connect to the database.
+  this.connect_();
 }
+
+
+/**
+ * Attempts to connect to the Mongo database, and throws an error if
+ * unseccessful.
+ * @private
+ */
+Mongo.prototype.connect_ = function() {
+  var self = this;
+  var connectionString = this.connectionString_;
+  if (connectionString) {
+    MongoClient.connect(connectionString, function(err, db) {
+      if (err) {
+        self.handleError_(err);
+      } else {
+        // Store the Mongo DBC on the Express "app" object.
+        self.app_.set('mongo', db);
+      }
+    });
+  } else {
+    var err = util.format(
+        'Could not connect to Mongo DB using connection string "%s"',
+        this.connectionString);
+    this.handleError_(err);
+  }
+};
+
+
+/**
+ * Throws a new error with the error message. Since the application cannot
+ * function without a functional database, the entire process is shutdown.
+ * @param {string} err The error message to display.
+ * @private
+ */
+Mongo.prototype.handleError_ = function(err) {
+  throw new Error(err);
+};
 
 
 /**
