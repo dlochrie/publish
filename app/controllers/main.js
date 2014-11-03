@@ -1,25 +1,39 @@
+var ArticleVM = require('../view-models/article');
+
+
 /**
  * Expose "Main" Controller.
  */
-module.exports = new Main;
+module.exports = new MainController;
 
 
 
 /**
- * Main Controller.
+ * Constructor for the MainController.
  * @constructor
  */
-function Main() {}
+function MainController() {}
 
 
-Main.prototype.index = function(req, res) {
-  res.render('index', {title: 'Express, through controller'});
+/**
+ * Renders the home page - lists all articles.
+ * @param {http.IncomingMessage} req Node/Express request object.
+ * @param {http.ServerResponse} res Node/Express response object.
+ */
+MainController.prototype.index = function(req, res) {
+  var viewModel = new ArticleVM(req.app);
+  viewModel.find(function(err, rows) {
+    res.render('main/index', {
+      rows: rows,
+      title: 'Publish: Home Page'
+    });
+  });
 };
 
-Main.prototype.about = function(req, res) {
-  res.render('index', {title: 'Express, About'});
+MainController.prototype.about = function(req, res) {
+  res.render('main/index', {title: 'Express, About'});
 };
 
-Main.prototype.contact = function(req, res) {
-  res.render('index', {title: 'Express, Contact'});
+MainController.prototype.contact = function(req, res) {
+  res.render('main/index', {title: 'Express, Contact'});
 };

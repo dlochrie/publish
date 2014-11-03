@@ -1,0 +1,9 @@
+if (rows.length)
+  each article in rows
+    article
+      h3.headline
+        a(href='/posts/#{article.slug}', title=article.title)
+          | #{article.title}
+      h5.byline By #{article.author ? article.author.displayName : 'N/A'}
+        small= article.created
+      .description!= article.description

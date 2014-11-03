@@ -25,7 +25,7 @@ ArticlesController.prototype.index = function(req, res, next) {
   viewModel.find(function(err, rows) {
     res.render('articles/index', {
       rows: rows,
-      title: 'Express, through controller'
+      title: 'Publish: Articles Home'
     });
   });
 };

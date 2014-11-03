@@ -1,8 +1,17 @@
 doctype html
-html
+html(lang='en')
   head
+    include partials/head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+
   body
-    h1 Welcome to pure awesomeness.
-    block content
+    .container
+      <!--Begin Top-Nav-->
+      include partials/top-nav
+
+      <!--Begin Main Content-->
+      .row
+        .col-md-12
+          <!--Begin Body Content-->
+          h1#title= title
+          block content
