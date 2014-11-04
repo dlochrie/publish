@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Get a list of all the configuration files. The order is important.
-var confList = ['globals', 'mongo', 'routes'];
+var confList = ['globals', 'mongo', 'mysql', 'routes'];
 
 // Load all the configuration files in the list.
 confList.forEach(function(name) {
