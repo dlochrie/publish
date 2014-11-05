@@ -13,12 +13,6 @@ var MySQLClient = require('mysql'),
  */
 function MySQL(app) {
   /**
-   * Reference to the Express app instance.
-   * @private {!express}
-   */
-  this.app_ = app;
-
-  /**
    * Reference to the "publish" app settings.
    * @private {!Object.<string>}
    */
@@ -65,8 +59,7 @@ function MySQL(app) {
  * @private
  */
 MySQL.prototype.connect_ = function() {
-  var app = this.app_,
-      settings = this.settings_;
+  var settings = this.settings_;
 
   var connection = MySQLClient.createPool({
     database: this.dbName_,
