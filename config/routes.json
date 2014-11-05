@@ -4,5 +4,8 @@
   ],
   "articles": [
     {"verb": "get", "path": "/articles", "action": "index"}
+  ],
+  "admin": [
+    {"verb": "get", "path": "/admin", "action": "index"}
   ]
 }

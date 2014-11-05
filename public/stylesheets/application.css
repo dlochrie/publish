@@ -6,3 +6,8 @@ body {
 .navbar {
   margin-bottom: 20px;
 }
+
+/* Admin Styles */
+.admin-portal-panel {
+  height: 250px;
+}
