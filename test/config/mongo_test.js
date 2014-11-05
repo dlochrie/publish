@@ -8,6 +8,7 @@ describe('mongo configuration test', function() {
       // Since it takes a second or two to connect, emulate some time passing.
       setTimeout(function() {
         mongo = new Mongo(app);
+        mongo.should.be.an.Object;
         done();
       }, 100);
     });

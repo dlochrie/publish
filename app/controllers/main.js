@@ -30,10 +30,22 @@ MainController.prototype.index = function(req, res) {
   });
 };
 
+
+/**
+ * Renders the about page.
+ * @param {http.IncomingMessage} req Node/Express request object.
+ * @param {http.ServerResponse} res Node/Express response object.
+ */
 MainController.prototype.about = function(req, res) {
-  res.render('main/index', {title: 'Express, About'});
+  res.render('main/about', {title: 'About Us'});
 };
 
+
+/**
+ * Renders the contact page.
+ * @param {http.IncomingMessage} req Node/Express request object.
+ * @param {http.ServerResponse} res Node/Express response object.
+ */
 MainController.prototype.contact = function(req, res) {
-  res.render('main/index', {title: 'Express, Contact'});
+  res.render('main/contact', {title: 'Contact Us'});
 };

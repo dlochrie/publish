@@ -16,8 +16,8 @@ describe('globals configuration test', function() {
       function(done) {
        app.should.be.a.Function;
        app.settings.publish.should.be.an.Object;
-       // Assert that each key is stored on the application settings, and that each
-       // is defined or "truthy".
+       // Assert that each key is stored on the application settings, and that
+       // each is defined or "truthy".
        keys.forEach(function(key) {
          app.settings.publish.should.have.property(key);
          app.settings.publish[key].should.be.ok;

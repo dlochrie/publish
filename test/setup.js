@@ -1,4 +1,7 @@
-// Force tests to run in the "test" environment.
+/**
+ * Force tests to run in the "test" environment.
+ * @type {string}
+ */
 process.env.NODE_ENV = 'test';
 
 // Make sure the global "app" is available to tests.

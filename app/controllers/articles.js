@@ -20,7 +20,7 @@ function ArticlesController() {}
  * @param {http.IncomingMessage} req Node/Express request object.
  * @param {http.ServerResponse} res Node/Express response object.
  */
-ArticlesController.prototype.index = function(req, res, next) {
+ArticlesController.prototype.index = function(req, res) {
   var viewModel = new ArticleVM(req.app);
   viewModel.find(function(err, rows) {
     res.render('articles/index', {

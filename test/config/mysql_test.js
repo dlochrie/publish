@@ -12,6 +12,7 @@ describe('mysql configuration test', function() {
   function makeConnection(cb) {
     setTimeout(function() {
       mysql = new MySQL(app);
+      mysql.should.be.an.Object;
       connection = app.settings.publish['MYSQL CONNECTION'];
       connection.should.be.an.Object;
       connection.should.have.property('config');
