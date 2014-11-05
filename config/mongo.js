@@ -15,10 +15,10 @@ var MongoClient = require('mongodb').MongoClient,
  */
 function Mongo(app) {
   /**
-   * Reference to the Express app instance.
-   * @private {!express}
+   * Reference to the "publish" app settings.
+   * @private {!Object.<string>}
    */
-  this.app_ = app;
+  this.settings_ = app.get('publish');
 
   /**
    * Connection string for the Mongo.
@@ -37,15 +37,17 @@ function Mongo(app) {
  * @private
  */
 Mongo.prototype.connect_ = function() {
-  var self = this;
-  var connectionString = this.connectionString_;
+  var connectionString = this.connectionString_,
+      settings = this.settings_,
+      self = this;
+
   if (connectionString) {
-    MongoClient.connect(connectionString, function(err, db) {
+    MongoClient.connect(connectionString, function(err, dbc) {
       if (err) {
         self.handleError_(err);
       } else {
-        // Store the Mongo DBC on the Express "app" object.
-        self.app_.set('mongo', db);
+        // Store the Mongo DBC on the "publish" namespace.
+        settings['mongo'] = dbc;
       }
     });
   } else {

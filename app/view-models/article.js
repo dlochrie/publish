@@ -13,14 +13,14 @@ module.exports = Article;
  * @param {express.app} app Express App instance.
  * @param {Object=} opt_resource Optional resource.
  * @constructor
- * @extends {app.models.base}
+ * @extends {app.viewModels.base}
  */
 function Article(app, opt_resource) {
   /**
-   * Local reference to the Express app instance.
-   * @private {express.app}
+   * Reference to the "publish" app settings.
+   * @private {!Object.<string>}
    */
-  this.app_ = app;
+  this.settings_ = app.get('publish');
 
   /**
    * Name of the MongoDB collection to operate on.
@@ -32,7 +32,7 @@ function Article(app, opt_resource) {
    * Mongo Database connection.
    * @private {!Object}
    */
-  this.dbc_ = app.settings.mongo;
+  this.dbc_ = this.settings_.mongo;
 
   /**
    * Optional model resource.

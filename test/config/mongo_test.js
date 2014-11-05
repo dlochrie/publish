@@ -1,7 +1,7 @@
 var Mongo = require('../../config/mongo');
 
 describe('mongo configuration test', function() {
-  var mongo;
+  var mongo, appSettings, mongoSettings;
 
   describe('when successfully configured', function() {
     beforeEach(function(done) {
@@ -14,21 +14,23 @@ describe('mongo configuration test', function() {
 
     it('should make a connection to the mongo database', function(done) {
       app.should.be.a.Function;
-      app.settings.mongo.should.be.an.Object;
-      app.settings.mongo.should.have.property('databaseName');
-      app.settings.mongo.should.have.property('serverConfig');
+      appSettings = app.settings.publish;
+      mongoSettings = appSettings['mongo'];
+      mongoSettings.should.be.an.Object;
+      mongoSettings.should.have.property('databaseName');
+      mongoSettings.should.have.property('serverConfig');
       done();
     });
   });
 
   describe('when unsuccessfully configured', function() {
     beforeEach(function(done) {
-      app.set('mongo', null);
+      mongoSettings = null;
       done();
     });
 
     it('should fail connecting with invalid parameters', function(done) {
-      app.settings.publish['MONGO CONNECTION STRING'] = 'blah';
+      appSettings['MONGO CONNECTION STRING'] = 'blah';
       // To test for thrown errors, we must wrap the methods in anonymous
       // functions.
       (function() {
@@ -40,7 +42,7 @@ describe('mongo configuration test', function() {
 
     it('should fail connecting with a missing connection string',
        function(done) {
-         app.settings.publish['MONGO CONNECTION STRING'] = null;
+         appSettings['MONGO CONNECTION STRING'] = null;
          // To test for thrown errors, we must wrap the methods in anonymous
          // functions.
          (function() {
