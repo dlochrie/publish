@@ -14,19 +14,22 @@ module.exports = Base;
 function Base(app, opt_resource) {
   /**
    * Reference to the "publish" app settings.
-   * @private {!Object.<string>}
+   * @type {!Object.<string>}
+   * @private
    */
   this.settings_ = app.get('publish');
 
   /**
    * Mongo Database connection.
-   * @private {!Object}
+   * @type {!Object}
+   * @private
    */
   this.dbc_ = this.settings_.mongo;
 
   /**
    * Optional model resource.
-   * @private {?Object}
+   * @type {?Object}
+   * @private
    */
   this.resource_ = opt_resource || null;
 }

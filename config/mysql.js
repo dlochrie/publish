@@ -71,7 +71,7 @@ MySQL.prototype.connect_ = function() {
   });
 
   if (connection) {
-    settings['MYSQL CONNECTION'] = connection;
+    settings.mysql = connection;
   } else {
     var err = util.format(
         'Could not connect to MySQL DB using connection string "%s"',

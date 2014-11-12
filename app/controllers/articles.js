@@ -25,7 +25,7 @@ ArticlesController.prototype.index = function(req, res) {
   viewModel.find(function(err, rows) {
     res.render('articles/index', {
       rows: rows,
-      title: 'Publish: Articles Home'
+      title: 'Posts Administration'
     });
   });
 };

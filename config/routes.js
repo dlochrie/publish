@@ -46,12 +46,16 @@ function Router(app) {
  * @return {!Function} The controller class.
  */
 Router.prototype.getController = function(name) {
-  var ctrl;
+  var ctrl, error;
+
   try {
     ctrl = require(path.join(Router.CONTROLLER_DIRECTORY_, name));
-  } catch (e) {}
+  } catch (e) {
+    error = e;
+  }
   if (!ctrl) {
-    throw new Error(util.format('Could not load the "%s" controller.', name));
+    throw new Error(util.format('Could not load the "%s" controller: %s',
+        name, error));
   }
   return ctrl;
 };

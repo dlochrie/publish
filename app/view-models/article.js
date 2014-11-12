@@ -9,7 +9,7 @@ module.exports = Article;
 
 
 /**
- * Article model constructor.
+ * Article view model constructor.
  * @param {express.app} app Express App instance.
  * @param {Object=} opt_resource Optional resource.
  * @constructor

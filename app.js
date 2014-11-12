@@ -29,6 +29,9 @@ confList.forEach(function(name) {
   return new Config(app);
 });
 
+// TODO: Formalize this.
+// app.settings.publish['LOG QUERIES'] = true;
+
 // Attach error handling middleware. This MUST come after router middleware,
 // which is loaded in the configuration above.
 app.use(errorHandler.pageNotFound);
