@@ -2,15 +2,12 @@ var MySQL = require('../../config/mysql'),
     clone = require('node-v8-clone').clone;
 
 describe('mysql configuration test', function() {
-  var mysql, connection, appCopy;
+  var mysql, connection;
 
-  beforeEach(function(done) {
-    // In order to avoid changing the global "app", we make a deep copy and use
-    // that for the tests.
-    appCopy = clone(app, true);
-    appCopy.should.not.equal(app);
-    done();
-  });
+  // In order to avoid changing the global "app", we make a deep copy and use
+  // that for the tests.
+  var appCopy = clone(app, true);
+  appCopy.should.not.equal(app);
 
   /**
    * Makes a connection to the MySQL Database given params defined on

@@ -65,6 +65,34 @@ Base.prototype.find = function(cb) {
 
 
 /**
+ * Finds exactly one record that matches the given parameters.
+ * @param {function} cb Callback function to fire when done.
+ */
+Base.prototype.findOne = function(cb) {
+  var associations = new Associations(this.tableName, this.modelAssociations),
+      self = this;
+
+  associations.getModelAssociations(function(joins) {
+    var queryString;
+    if (joins) {
+      queryString = util.format(Base.SELECT_ONE_QUERY_STRING_WITH_JOIN_,
+          self.tableName, joins);
+    } else {
+      queryString = util.format(Base.SELECT_ONE_QUERY_STRING_WITHOUT_JOIN_,
+          self.tableName);
+    }
+
+    var columns = self.getColumns();
+    var where = self.getQueryObject() || Base.DEFAULT_WHERE_VALUE_;
+    self.select(queryString, columns, where, function(err, results) {
+      var result = results && results.length ? results.shift() : {};
+      cb(err, result);
+    });
+  });
+};
+
+
+/**
  * Wrapper for SELECT statements.
  * Performs query and returns connection back to pool.
  * @param {string} query The query string to append values to.

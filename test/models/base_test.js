@@ -33,7 +33,12 @@ describe('base model test', function() {
     });
 
     it('should find one record for a model', function(done) {
-      done(new Error('Please implement.'));
+      post = new Post(app);
+      post.findOne(function(err, results) {
+        (err === null).should.be.true;
+        results.should.be.an.Object.and.have.properties('post', 'user');
+        done();
+      });
     });
 
     it('should perform a SELECT query', function(done) {
