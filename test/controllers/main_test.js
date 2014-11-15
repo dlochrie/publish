@@ -1,6 +1,5 @@
 var request = require('supertest');
 
-
 describe('main controller test', function() {
   it('should show the home page', function(done) {
     request(app).
