@@ -13,7 +13,7 @@ describe('mysql configuration test', function() {
     setTimeout(function() {
       mysql = new MySQL(app);
       mysql.should.be.an.Object;
-      connection = app.settings.publish['MYSQL CONNECTION'];
+      connection = app.settings.publish['mysql'];
       connection.should.be.an.Object;
       connection.should.have.property('config');
       connection.should.have.property('_maxListeners');
@@ -43,9 +43,6 @@ describe('mysql configuration test', function() {
     beforeEach(makeConnection);
 
     it('should make a connection to the mysql database', function(done) {
-      connection.should.be.an.Object;
-      connection.should.have.property('config');
-      connection.should.have.property('_maxListeners');
       testConnection(function(err) {
         var hasError = !!err;
         (hasError).should.be.false;
@@ -58,10 +55,6 @@ describe('mysql configuration test', function() {
     it('should fail connecting with an invalid password', function(done) {
       app.settings.publish['MYSQL PASS'] = 'wrong';
       makeConnection(function() {
-        connection = app.settings.publish['MYSQL CONNECTION'];
-        connection.should.be.an.Object;
-        connection.should.have.property('config');
-        connection.should.have.property('_maxListeners');
         testConnection(function(err) {
           var hasError = !!err;
           (hasError).should.be.true;
@@ -74,7 +67,6 @@ describe('mysql configuration test', function() {
     it('should fail connecting with a missing password', function(done) {
       app.settings.publish['MYSQL PASS'] = null;
       makeConnection(function() {
-        connection = app.settings.publish['MYSQL CONNECTION'];
         testConnection(function(err) {
           var hasError = !!err;
           (hasError).should.be.true;
@@ -87,7 +79,6 @@ describe('mysql configuration test', function() {
     it('should fail connecting with an invalid host url', function(done) {
       app.settings.publish['MYSQL HOST'] = 'http://wrong.com';
       makeConnection(function() {
-        connection = app.settings.publish['MYSQL CONNECTION'];
         testConnection(function(err) {
           var hasError = !!err;
           (hasError).should.be.true;

@@ -89,15 +89,20 @@ describe('routes configuration test', function() {
   });
 
   it('should fail to get non-existent controllers', function(done) {
-    // To test for thrown errors, we must wrap the methods in anonymous
-    // functions.
+    // To test for thrown errors, we must wrap the methods in
+    // anonymous functions.
     (function() {
       router.getController('undef');
-    }).should.throw('Could not load the "undef" controller.');
+    }).should.throw(
+        'Could not load the "undef" controller: Error: Cannot find module ' +
+        '\'../app/controllers/undef\'');
 
     (function() {
       router.getController(null);
-    }).should.throw('Could not load the "null" controller.');
+    }).should.throw(
+        'Could not load the "null" controller: TypeError: ' +
+        'Arguments to path.join must be strings');
+
     done();
   });
 });
