@@ -1,7 +1,16 @@
-var MySQL = require('../../config/mysql');
+var MySQL = require('../../config/mysql'),
+    clone = require('node-v8-clone').clone;
 
 describe('mysql configuration test', function() {
-  var mysql, connection;
+  var mysql, connection, appCopy;
+
+  beforeEach(function(done) {
+    // In order to avoid changing the global "app", we make a deep copy and use
+    // that for the tests.
+    appCopy = clone(app, true);
+    appCopy.should.not.equal(app);
+    done();
+  });
 
   /**
    * Makes a connection to the MySQL Database given params defined on
@@ -11,9 +20,9 @@ describe('mysql configuration test', function() {
    */
   function makeConnection(cb) {
     setTimeout(function() {
-      mysql = new MySQL(app);
+      mysql = new MySQL(appCopy);
       mysql.should.be.an.Object;
-      connection = app.settings.publish['mysql'];
+      connection = appCopy.settings.publish['mysql'];
       connection.should.be.an.Object;
       connection.should.have.property('config');
       connection.should.have.property('_maxListeners');
@@ -53,7 +62,7 @@ describe('mysql configuration test', function() {
 
   describe('when unsuccessfully configured', function() {
     it('should fail connecting with an invalid password', function(done) {
-      app.settings.publish['MYSQL PASS'] = 'wrong';
+      appCopy.settings.publish['MYSQL PASS'] = 'wrong';
       makeConnection(function() {
         testConnection(function(err) {
           var hasError = !!err;
@@ -65,7 +74,7 @@ describe('mysql configuration test', function() {
     });
 
     it('should fail connecting with a missing password', function(done) {
-      app.settings.publish['MYSQL PASS'] = null;
+      appCopy.settings.publish['MYSQL PASS'] = null;
       makeConnection(function() {
         testConnection(function(err) {
           var hasError = !!err;
@@ -77,7 +86,7 @@ describe('mysql configuration test', function() {
     });
 
     it('should fail connecting with an invalid host url', function(done) {
-      app.settings.publish['MYSQL HOST'] = 'http://wrong.com';
+      appCopy.settings.publish['MYSQL HOST'] = 'http://wrong.com';
       makeConnection(function() {
         testConnection(function(err) {
           var hasError = !!err;
