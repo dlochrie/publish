@@ -120,16 +120,7 @@ Base.prototype.select = function(query, columns, where, cb) {
  * @return {!Array.<string>} List of columns for SELECT statements.
  */
 Base.prototype.getColumns = function() {
-  return this.tableColumns;
-};
-
-
-/**
- * Builds a query string based on an action using a template.
- * @return {string} The constructed query string.
- */
-Base.prototype.getQueryString = function(action) {
-  return this.queries[action];
+  return this.tableColumns || [];
 };
 
 
@@ -138,14 +129,15 @@ Base.prototype.getQueryString = function(action) {
  * @return {?Object} The formatted resource.
  */
 Base.prototype.getQueryObject = function() {
-  var resource = this.resource && !Object.keys(this.resource).length ?
-      this.resource : null;
-  var queryObject;
+  var resource = this.resource_ && Base.isObject_(this.resource_) ?
+      this.resource_ : null,
+      queryObject;
 
   if (resource) {
     var structure = this.structure,
         tableName = this.tableName,
-        fields = Object.keys(structure) || [];
+        fields = Object.keys(structure) || [],
+        queryObject = {};
 
     fields.forEach(function(field) {
       if (resource[field]) {
@@ -169,6 +161,17 @@ Base.prototype.logQuery_ = function(query) {
     var message = util.format('MySQL Query:\t %s', query.sql || 'N/A');
     console.log(message);
   }
+};
+
+
+/**
+ * Determines whether an item is an Object (but not an Array).
+ * @param {*} object Item to test for object-ness.
+ * @private
+ */
+Base.isObject_ = function(object) {
+  return object === Object(object) && Object.prototype.toString.call(object)
+  !== '[object Array]';
 };
 
 

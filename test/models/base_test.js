@@ -1,10 +1,25 @@
 var Base = require('../../app/models/base'),
-    Post = require('../../app/models/post');
+    Post = require('../../app/models/post'),
+    util = require('util');
 
 describe('base model test', function() {
-  describe('when setting defaults and initialization', function() {
-    var base;
+  var base;
 
+  /**
+   * In order to test to test inhereited/extended properties and methods,
+   * we will emulate a common model: Post.
+   * @param {Function} done Callback to fire when done.
+   */
+  function loadTestModel(done) {
+    base = new Base(app);
+    base.modelAssociations = Post.MODEL_ASSOCIATIONS_;
+    base.structure = Post.STRUCTURE_;
+    base.tableColumns = Post.SELECT_COLUMNS_;
+    base.tableName = 'post';
+    done();
+  }
+
+  describe('when setting defaults and initialization', function() {
     it('should provide default values', function(done) {
       base = new Base(app);
       base.settings_.should.be.an.Object.and.have.properties('mysql', 'mongo');
@@ -21,11 +36,10 @@ describe('base model test', function() {
   });
 
   describe('when performing queries', function() {
-    var post;
+    beforeEach(loadTestModel);
 
     it('should find all the records for a model', function(done) {
-      post = new Post(app);
-      post.find(function(err, results) {
+      base.find(function(err, results) {
         (err === null).should.be.true;
         results.should.be.an.Array;
         done();
@@ -33,34 +47,90 @@ describe('base model test', function() {
     });
 
     it('should find one record for a model', function(done) {
-      post = new Post(app);
-      post.findOne(function(err, results) {
+      base.findOne(function(err, result) {
         (err === null).should.be.true;
-        results.should.be.an.Object.and.have.properties('post', 'user');
+        result.should.be.an.Object.and.have.properties('post', 'user');
         done();
       });
     });
 
     it('should perform a SELECT query', function(done) {
-      done(new Error('Please implement.'));
+      var query = util.format(Base.SELECT_QUERY_STRING_WITHOUT_JOIN_,
+          base.tableName),
+          columns = ['id', 'title'],
+          where = base.getQueryObject() || Base.DEFAULT_WHERE_VALUE_;
+
+      base.select(query, columns, where, function(err, results) {
+        (err === null).should.be.true;
+        results.should.be.an.Array;
+        var first = results[0];
+        first.should.be.an.Object.and.have.property('post');
+        first.post.should.have.properties(columns);
+        done();
+      });
     });
+
+    it('should display an error with missing or incomplete data',
+        function(done) {
+          base.modelAssociations = {};
+          base.tableColumns = [];
+          base.find(function(err, results) {
+            err.should.be.an.Error;
+            err.message.should.match(
+                /ER_PARSE_ERROR: You have an error in your SQL syntax/);
+            done();
+          });
+        });
   });
 
   describe('utility methods', function() {
-    it('should get a model\'s columns', function(done) {
-      done(new Error('Please implement.'));
+    beforeEach(loadTestModel);
+
+    it('should get a model\'s columns when the subclass provides them',
+        function() {
+         base.getColumns().should.eql(Post.SELECT_COLUMNS_);
+       });
+
+    it('should return an empty array when the subclass does not provide columns',
+        function() {
+          base.tableColumns = null;
+          base.getColumns().should.eql([]);
+          base.tableColumns = undefined;
+          base.getColumns().should.eql([]);
+          base.tableColumns = 0;
+          base.getColumns().should.eql([]);
+       });
+
+    it('should get a query object for a given model resource', function() {
+      base.resource_ = {id: 1234};
+      base.getQueryObject().should.eql({'post.id': 1234});
+      base.resource_ = {id: 1234, body: 'Some text here'};
+      base.getQueryObject().should.eql({
+        'post.id': 1234,
+        'post.body': 'Some text here'
+      });
     });
 
-    it('should get a query string for a given action', function(done) {
-      done(new Error('Please implement.'));
-    });
-
-    it('should get a query object for a given model resource', function(done) {
-      done(new Error('Please implement.'));
-    });
+    it('should be undefined when looking for a queryObject without a resource',
+       function() {
+         [null, undefined, 'a string', 123, []].forEach(function(test) {
+           base.resource_ = test;
+           (base.getQueryObject() === undefined).should.be.true;
+         });
+       });
 
     it('should log queries when query logging is enabled', function(done) {
       done(new Error('Please implement.'));
+    });
+
+    it('should determine if a variable is an object or not', function() {
+      [{foo: 'bar'}, {}, base].forEach(function(test) {
+        Base.isObject_(test).should.be.true;
+      });
+
+      [null, undefined, 'a string', 123, []].forEach(function(test) {
+        Base.isObject_(test).should.be.false;
+      });
     });
   });
 });

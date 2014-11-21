@@ -24,12 +24,6 @@ function Post(app, opt_resource) {
   this.modelAssociations = Post.MODEL_ASSOCIATIONS_;
 
   /**
-   * Object mapping queries to CRUD actions.
-   * @enum {string}
-   */
-  this.queries = Post.QUERIES_;
-
-  /**
    * Object mapping the Model/Table Structure.
    * @enum {!Object.<string, string>}
    */
