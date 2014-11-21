@@ -166,6 +166,7 @@ Base.prototype.logQuery_ = function(query) {
 
 /**
  * Determines whether an item is an Object (but not an Array).
+ * See: http://stackoverflow.com/a/14706877/1058612.
  * @param {*} object Item to test for object-ness.
  * @private
  */
