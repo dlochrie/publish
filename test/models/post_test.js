@@ -28,6 +28,7 @@ describe('post model test', function() {
     post.tableColumns.should.be.an.Array;
     post.tableColumns.indexOf('post.title').should.not.eql(-1);
     post.tableColumns.indexOf('post.description').should.not.eql(-1);
+    // Control value.
     post.tableColumns.indexOf('invalid').should.eql(-1);
   });
 

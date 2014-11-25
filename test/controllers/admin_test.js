@@ -1,6 +1,5 @@
 var request = require('supertest');
 
-
 describe('admin controller test', function() {
   it('should show the admin page', function(done) {
     request(app).
