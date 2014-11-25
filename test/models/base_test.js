@@ -1,5 +1,6 @@
 var Base = require('../../app/models/base'),
     Post = require('../../app/models/post'),
+    sinon = require('sinon'),
     util = require('util');
 
 describe('base model test', function() {
@@ -119,10 +120,6 @@ describe('base model test', function() {
          });
        });
 
-    it('should log queries when query logging is enabled', function(done) {
-      done(new Error('Please implement.'));
-    });
-
     it('should determine if a variable is an object or not', function() {
       [{foo: 'bar'}, {}, base].forEach(function(test) {
         Base.isObject_(test).should.be.true;
@@ -131,6 +128,46 @@ describe('base model test', function() {
       [null, undefined, 'a string', 123, []].forEach(function(test) {
         Base.isObject_(test).should.be.false;
       });
+    });
+  });
+
+  describe('query logger', function() {
+    var query, spy;
+
+    beforeEach(function(done) {
+      query = {sql: 'SELECT * FROM post'};
+      spy = sinon.spy(console, 'log');
+      done();
+    });
+
+    afterEach(function(done) {
+      // Restore the original method.
+      spy.restore();
+      done();
+    });
+
+    it('should log queries when query logging is enabled', function() {
+      // Enable log queries setting.
+      base.settings_['LOG QUERIES'] = true;
+      base.logQuery_(query);
+      spy.called.should.be.true;
+      spy.args.should.be.an.Array;
+    });
+
+    it('should show a default message when logs are enabled with no sql value',
+       function() {
+         query.sql = null;
+         base.logQuery_(query);
+         spy.called.should.be.true;
+         spy.args.should.be.an.Array;
+         spy.args[0].should.eql(['MySQL Query:\t N/A']);
+       });
+
+    it('should NOT log queries when query logging is NOT enabled', function() {
+      // Disable log queries setting.
+      base.settings_['LOG QUERIES'] = false;
+      base.logQuery_(query);
+      spy.called.should.be.false;
     });
   });
 });
