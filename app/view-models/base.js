@@ -42,7 +42,7 @@ function Base(app, opt_resource) {
  */
 Base.prototype.find = function(cb) {
   var collection = this.dbc_.collection(this.collectionName);
-  collection.find().toArray(cb);
+  collection.find(this.resource_).toArray(cb);
 };
 
 
@@ -51,6 +51,9 @@ Base.prototype.find = function(cb) {
  * @param {function(error, array)} cb Callback to fire when done. Sends an error
  *      if one exists, and/or the rows/results.
  */
-Base.prototype.findOne = function(cb) {};
+Base.prototype.findOne = function(cb) {
+  var collection = this.dbc_.collection(this.collectionName);
+  collection.findOne(this.resource_, cb);
+};
 
 

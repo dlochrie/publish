@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  .row: .col-md-12
+    h5
+      | by <a href="/users/#{article.author.slug}">
+      | #{article.author.displayName}</a>
+      span.pull-right
+        small= article.created
+    div!= article.body
+
+  .row#post-share: .col-md-12
+    ul.list-inline.flairline
+      li: a: i.fa.fa-print
+      li: a: i.fa.fa-envelope
+      li: a: i.fa.fa-facebook
+      li: a: i.fa.fa-twitter
+      li: a: i.fa.fa-google-plus

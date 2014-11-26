@@ -3,7 +3,8 @@
     {"verb": "get", "path": "/", "action": "index"}
   ],
   "articles": [
-    {"verb": "get", "path": "/articles", "action": "index"}
+    {"verb": "get", "path": "/articles", "action": "index"},
+    {"verb": "get", "path": "/articles/:id", "action": "show"}
   ],
   "admin": [
     {"verb": "get", "path": "/admin", "action": "index"}

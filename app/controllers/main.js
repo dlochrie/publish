@@ -22,9 +22,9 @@ function MainController() {}
  */
 MainController.prototype.index = function(req, res) {
   var viewModel = new ArticleVM(req.app);
-  viewModel.find(function(err, rows) {
+  viewModel.find(function(err, articles) {
     res.render('main/index', {
-      rows: rows,
+      articles: articles,
       title: 'Publish: Home Page'
     });
   });
