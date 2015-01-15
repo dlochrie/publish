@@ -168,11 +168,12 @@ Base.prototype.logQuery_ = function(query) {
  * Determines whether an item is an Object (but not an Array).
  * See: http://stackoverflow.com/a/14706877/1058612.
  * @param {*} object Item to test for object-ness.
+ * @return {boolean} Whether the value is an object or not.
  * @private
  */
 Base.isObject_ = function(object) {
-  return object === Object(object) && Object.prototype.toString.call(object)
-  !== '[object Array]';
+  return object === Object(object) &&
+      Object.prototype.toString.call(object) !== '[object Array]';
 };
 
 

@@ -9,9 +9,20 @@ html(lang='en')
       <!--Begin Top-Nav-->
       include partials/top-nav
 
+      <!--Begin Messages-->
+      include partials/messages
+
       <!--Begin Main Content-->
       .row
         .col-md-12
           <!--Begin Body Content-->
           h1#title= title
           block content
+
+      hr
+
+      footer.footer
+        p &copy; Company 2014
+
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')

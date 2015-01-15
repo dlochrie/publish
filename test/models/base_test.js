@@ -92,7 +92,8 @@ describe('base model test', function() {
          base.getColumns().should.eql(Post.SELECT_COLUMNS_);
        });
 
-    it('should return an empty array when the subclass does not provide columns',
+    it('should return an empty array when the subclass does not provide ' +
+        'columns',
         function() {
           base.tableColumns = null;
           base.getColumns().should.eql([]);

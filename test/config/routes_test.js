@@ -26,14 +26,20 @@ describe('routes configuration test', function() {
   it('should get routes for the application', function(done) {
     // Get all the routes that match the GET verb. To keep the test simple,
     // we are skipping POST, DELETE, etc.
-    var routes = router.getRoutesByVerb('get');
+    var routes = router.getRoutesByVerb('get'),
+        hasParamRegex = /.*:{1}[\w]+/;
 
-    // Recursively "GET" each route. If any fails, then the test fails.
+    // Recursively "GET" each route. If any fails, then the test fails. Skips
+    // routes with parameters (:param).
     function recursiveGet(route) {
       if (route) {
-        getRoute(route, function() {
+        if (!hasParamRegex.test(route)) {
+          getRoute(route, function() {
+            recursiveGet(routes.shift());
+          });
+        } else {
           recursiveGet(routes.shift());
-        });
+        }
       } else {
         done();
       }

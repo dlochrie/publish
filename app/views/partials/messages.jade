@@ -1,0 +1,22 @@
+mixin closeBtn
+  button.close(type='button', data-dismiss='alert')
+    span(aria-hidden='true') &times;
+    span.sr-only Close
+
+.row
+  .col-md-12
+    if flash
+      if flash.error && flash.error.length
+        each msg in flash.error
+          .alert.alert-danger= msg
+            +closeBtn
+
+      if flash.info && flash.info.length
+        each msg in flash.info
+          .alert.alert-danger= msg
+            +closeBtn
+
+      if flash.success && flash.success.length
+        each msg in flash.success
+          .alert.alert-success= msg
+            +closeBtn

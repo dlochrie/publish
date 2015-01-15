@@ -1,4 +1,5 @@
-var ArticleVM = require('../view-models/article');
+var ArticleVM = require('../view-models/article'),
+    messages = require('../../lib/messages');
 
 
 /**
@@ -23,7 +24,10 @@ function ArticlesController() {}
 ArticlesController.prototype.index = function(req, res) {
   var viewModel = new ArticleVM(req.app);
   viewModel.find(function(err, articles) {
-    // TODO: Handle errors...
+    if (err || !articles) {
+      messages.appendError(req.session,
+          'There was an error loading the articles.');
+    }
     res.render('articles/index', {
       articles: articles,
       title: 'Posts Administration'
@@ -41,11 +45,10 @@ ArticlesController.prototype.show = function(req, res) {
   var slug = req.params.id;
   var viewModel = new ArticleVM(req.app, {slug: slug});
   viewModel.findOne(function(err, article) {
-    // TODO: Handle errors...
     if (err || !article) {
-      res.render('error', {
-        message: 'The article you were looking for could not be found.'
-      });
+      messages.appendError(req.session,
+          'The article you were looking for could not be found.');
+      res.redirect('/articles');
     } else {
       res.render('articles/show', {
         article: article,
