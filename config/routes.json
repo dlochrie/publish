@@ -6,6 +6,22 @@
     {"verb": "get", "path": "/articles", "action": "index"},
     {"verb": "get", "path": "/articles/:id", "action": "show"}
   ],
+  "authentication": [
+    {
+      "verb": "get",
+      "path": "/auth/google",
+      "action": "requestGoogleAuthentication"
+    }, {
+      "verb": "get",
+      "path": "/auth/google/callback",
+      "action": "handleGoogleResponse",
+      "middleware": "authenticateWithGoogle"
+    }, {
+      "verb": "get",
+      "path": "/logout",
+      "action": "logout"
+    }
+  ],
   "admin": [
     {"verb": "get", "path": "/admin", "action": "index"}
   ],

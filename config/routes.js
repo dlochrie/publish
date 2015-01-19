@@ -4,7 +4,8 @@
  */
 var express = require('express'),
     path = require('path'),
-    util = require('util');
+    util = require('util'),
+    passport = require('passport');
 
 
 
@@ -80,8 +81,15 @@ Router.prototype.getRoutes = function() {
         var verb = route.verb,
             path = route.path,
             action = route.action,
+            middleware = route.middleware,
             callback = ctrl[action];
-        router[verb](path, callback);
+
+        if (middleware) {
+          var middlewareFn = ctrl[route.middleware];
+          router[verb](path, middlewareFn, callback);
+        } else {
+          router[verb](path, callback);
+        }
       });
     } else {
       throw new Error(util.format(

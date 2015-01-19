@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var passport = require('passport');
 var errorHandler = require('./lib/error-handler');
 var app = express();
 
@@ -27,6 +28,10 @@ app.use(session({
   saveUninitialized: true
 }));
 
+// Register passportjs middleware.
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Add middleware for flashed messages.
 app.use(function(req, res, next) {
   if (req.session && req.session.messages) {
@@ -39,10 +44,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Make the User's name available to views through the locals object.
+// TODO: Move this somewhere more appropriate.
+app.use(function(req, res, next) {
+  var session = req.session;
+  if (session.loggedIn && session.passport) {
+    res.locals.user = session.passport.user;
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Get a list of all the configuration files. The order is important.
-var confList = ['globals', 'mongo', 'mysql', 'routes'];
+var confList = ['globals', 'mongo', 'mysql', 'authentication', 'routes'];
 
 // Load all the configuration files in the list.
 confList.forEach(function(name) {
