@@ -85,7 +85,7 @@ Post.SELECT_COLUMNS_ = [
   'post.slug',
   'post.created',
   'post.updated',
-  'user.displayName',
+  'user.display_name',
   'user.email',
   'user.id',
   'user.slug'
