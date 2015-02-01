@@ -1,0 +1,27 @@
+{
+  "articles": [{
+    "title": "Landing on the Moon",
+    "slug": "landing-on-the-moon",
+    "description": "Neil Armstrong recalls landing on the moon.",
+    "body": "<p>'Oh, the times we had!', Armstrong says with a smile.</p>",
+    "created": "sometime",
+    "updated": "sometime",
+    "author": {
+      "displayName": "Neil Armstrong",
+      "email": "n.armstrong@email.com",
+      "slug": "neil-armstrong"
+    }
+  }, {
+    "title": "Where have you gone, Roger Maris?",
+    "slug": "where-have-you-gone-roger-maris",
+    "description": "Roger Maris hit 61 home runs in 1961, a record that still stands.",
+    "body": "<p>In 1961, Roger Maris hit 61 home runs - without the use(or availability) of steroids and performance enhancing drugs.</p>",
+    "created": "sometime",
+    "updated": "sometime",
+    "author": {
+      "displayName": "Joe Sportswriter",
+      "email": "j.sportsman@email.com",
+      "slug": "joe-sportswriter"
+    }
+  }]
+}
